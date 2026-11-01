@@ -65,6 +65,7 @@ namespace PurchaseBill.Api.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -87,6 +88,7 @@ namespace PurchaseBill.Api.Controllers
             });
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost("login")]
         public async Task<IActionResult> Login(
             [FromBody] LoginRequest request)

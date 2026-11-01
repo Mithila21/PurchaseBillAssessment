@@ -14,6 +14,7 @@ users to create and save Purchase Bills.
 ## Technologies Used
 
 ### Frontend
+
 - Angular 22
 - TypeScript
 - HTML and CSS
@@ -22,6 +23,7 @@ users to create and save Purchase Bills.
 - Angular HttpClient
 
 ### Backend
+
 - ASP.NET Core Web API (.NET 8)
 - C#
 - ADO.NET (Microsoft.Data.SqlClient)
@@ -29,12 +31,14 @@ users to create and save Purchase Bills.
 - Antiforgery Token Validation
 
 ### Database
+
 - Microsoft SQL Server 2022
 - SQL Server Developer Edition for local development
 
 ## Features
 
 ### Login
+
 - Email and password validation
 - Authentication through Enhanzer's external API
 - Stores returned user locations in SQL Server
@@ -43,6 +47,7 @@ users to create and save Purchase Bills.
 - Logout functionality
 
 ### Purchase Bill
+
 - Item autocomplete
 - Batch dropdown populated from SQL Server
 - Standard Cost and Standard Price fields
@@ -56,10 +61,10 @@ users to create and save Purchase Bills.
 ## Project Structure
 
 PurchaseBillAssessment/
-  frontend/       Angular application
-  backend/        ASP.NET Core Web API
-  database/       SQL Server database script
-  README.md       Project documentation
+frontend/ Angular application
+backend/ ASP.NET Core Web API
+database/ SQL Server database script
+README.md Project documentation
 
 ## Prerequisites
 
@@ -140,12 +145,12 @@ The Angular development proxy is configured in angular.json.
 
 ## API Endpoints
 
-POST /api/auth/login       Authenticate user
-GET  /api/auth/me          Check current session
-POST /api/auth/logout      Logout
-GET  /api/auth/csrf        Obtain antiforgery token
-GET  /api/locations        Retrieve saved locations
-POST /api/purchasebills    Save Purchase Bill
+POST /api/auth/login Authenticate
+GET /api/auth/me Check session
+POST /api/auth/logout Logout
+GET /api/auth/csrf Get CSRF token
+GET /api/locations Get locations
+POST /api/purchasebills Save bill
 
 ## Security
 
