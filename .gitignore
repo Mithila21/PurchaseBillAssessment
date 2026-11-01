@@ -1,0 +1,25 @@
+# Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# ASP.NET Core
+backend/bin/
+backend/obj/
+
+# Local configuration and secrets
+.env
+.env.*
+**/appsettings.Development.json
+**/appsettings.Local.json
+
+# IDE
+.vscode/
+.idea/
+*.user
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

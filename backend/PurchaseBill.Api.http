@@ -1,0 +1,6 @@
+@PurchaseBill.Api_HostAddress = http://localhost:5278
+
+GET {{PurchaseBill.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

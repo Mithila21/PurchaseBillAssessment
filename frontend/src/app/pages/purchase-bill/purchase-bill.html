@@ -1,0 +1,169 @@
+<main class="bill-page">
+  <div class="page-header">
+    <div>
+      <h1>Purchase Bill</h1>
+      <p class="subtitle">Enter purchase item details below.</p>
+    </div>
+
+    <button type="button" class="logout-btn" (click)="logout()" [disabled]="loggingOut()">
+      {{ loggingOut() ? 'Logging out...' : 'Logout' }}
+    </button>
+  </div>
+
+  @if (logoutError()) {
+    <p class="error" role="alert">
+      {{ logoutError() }}
+    </p>
+  }
+
+  @if (loading()) {
+    <p>Loading locations...</p>
+  }
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+
+  <form [formGroup]="billForm" (ngSubmit)="addItem()" class="form-card">
+    <div class="form-grid">
+      <div class="field">
+        <label for="item">Item *</label>
+        <input
+          id="item"
+          type="text"
+          list="fruit-list"
+          formControlName="item"
+          placeholder="Search item"
+        />
+
+        <datalist id="fruit-list">
+          @for (fruit of fruits; track fruit) {
+            <option [value]="fruit"></option>
+          }
+        </datalist>
+      </div>
+
+      <div class="field">
+        <label for="batch">Batch *</label>
+        <select id="batch" formControlName="batch">
+          <option value="">Select batch</option>
+          @for (location of locations(); track location.locationCode) {
+            <option [value]="location.locationCode">
+              {{ location.locationName }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="cost">Standard Cost *</label>
+        <input id="cost" type="number" min="0" formControlName="standardCost" />
+      </div>
+
+      <div class="field">
+        <label for="price">Standard Price *</label>
+        <input id="price" type="number" min="0" formControlName="standardPrice" />
+      </div>
+
+      <div class="field">
+        <label for="quantity">Quantity *</label>
+        <input id="quantity" type="number" min="1" step="1" formControlName="quantity" />
+      </div>
+
+      <div class="field">
+        <label for="discount">Discount (%) *</label>
+        <input id="discount" type="number" min="0" max="100" formControlName="discount" />
+      </div>
+
+      <div class="field">
+        <label>Total Cost</label>
+        <div class="calculated-value">
+          {{ calculated().totalCost.toFixed(2) }}
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Total Selling</label>
+        <div class="calculated-value">
+          {{ calculated().totalSelling.toFixed(2) }}
+        </div>
+      </div>
+    </div>
+
+    @if (formError()) {
+      <p class="error" role="alert">{{ formError() }}</p>
+    }
+
+    <button type="submit" class="add-btn" [disabled]="loading() || !!error()">+ Add Item</button>
+  </form>
+
+  <h2 class="section-title">Item Summary</h2>
+  <section class="summary">
+    <div class="summary-box">
+      <span>Total Items</span>
+      <strong>{{ totalItems() }}</strong>
+    </div>
+
+    <div class="summary-box">
+      <span>Total Quantity</span>
+      <strong>{{ totalQuantity() }}</strong>
+    </div>
+  </section>
+
+  <section class="table-card">
+    <h2>Added Items</h2>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Batch</th>
+            <th>Qty</th>
+            <th>Total Cost</th>
+            <th>Total Selling</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (row of items(); track row.id) {
+            <tr>
+              <td>{{ row.item }}</td>
+              <td>{{ row.batch }}</td>
+              <td>{{ row.quantity }}</td>
+              <td>{{ row.totalCost.toFixed(2) }}</td>
+              <td>{{ row.totalSelling.toFixed(2) }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty">No items added yet.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="save-section">
+    <button
+      type="button"
+      class="save-btn"
+      (click)="saveBill()"
+      [disabled]="saving() || items().length === 0"
+    >
+      {{ saving() ? 'Saving...' : 'Save Bill' }}
+    </button>
+
+    @if (saveMessage()) {
+      <p class="save-success" role="status">
+        {{ saveMessage() }}
+      </p>
+    }
+
+    @if (saveError()) {
+      <p class="save-error" role="alert">
+        {{ saveError() }}
+      </p>
+    }
+  </section>
+</main>
