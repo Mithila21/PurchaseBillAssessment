@@ -73,7 +73,7 @@ export class Login {
 
     ).subscribe({
       next: () => {
-        this.router.navigate(['/purchase-bill']);
+        this.router.navigate(['/dashboard']);
       },
 
       error: (error) => {

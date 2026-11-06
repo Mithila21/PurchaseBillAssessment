@@ -1,0 +1,160 @@
+
+<div class="dashboard-shell">
+
+  <header class="topbar">
+    <div class="brand">Enhanzer <span>Dashboard</span></div>
+    <div class="topbar-right">Purchase Management System</div>
+  </header>
+
+  <div class="dashboard-layout">
+
+    <aside class="sidebar">
+      <div class="nav-label">MENU</div>
+      <a routerLink="/dashboard" class="nav-link active">
+        ▦ Dashboard
+      </a>
+      <a routerLink="/purchase-bill" class="nav-link">
+        ▤ Purchase Bill
+      </a>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-heading">
+        <div>
+          <h1>Welcome Dashboard</h1>
+          <p>Overview of purchase orders and items</p>
+        </div>
+
+        <button class="refresh-btn"
+                (click)="loadDashboard()"
+                [disabled]="loading()">
+          Refresh
+        </button>
+      </div>
+
+      @if (error()) {
+        <div class="error-message">{{ error() }}</div>
+      }
+
+      @if (loading()) {
+        <p class="loading-message">Loading dashboard...</p>
+      }
+
+      <div class="widgets">
+
+        <!-- WIDGET 1 -->
+        <section class="widget">
+          <div class="widget-header">
+            <h2>Latest Purchase Orders</h2>
+            <span class="widget-tag">Latest 5</span>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Net Amount</th>
+                  <th>No. of Items</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (order of orders(); track order.purchaseOrderId) {
+                  <tr>
+                    <td class="id-cell">
+                      {{ order.purchaseOrderId }}
+                    </td>
+                    <td>{{ order.netAmount | number:'1.2-2' }}</td>
+                    <td>{{ order.numberOfItems }}</td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="3" class="empty-cell">
+                      No purchase orders found
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- WIDGET 2 -->
+        <section class="widget">
+          <div class="widget-header">
+            <h2>Oldest Purchase Items</h2>
+            <span class="widget-tag">Oldest 10</span>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Item Name</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of oldestItems(); track $index) {
+                  <tr>
+                    <td class="id-cell">
+                      {{ item.purchaseOrderId }}
+                    </td>
+                    <td>{{ item.itemName }}</td>
+                    <td>{{ item.quantity }}</td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="3" class="empty-cell">
+                      No items found
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- WIDGET 3 -->
+        <section class="widget chart-widget">
+          <div class="widget-header">
+            <h2>Item Quantity Summary</h2>
+            <span class="widget-tag">All Items</span>
+          </div>
+
+          @if (totalQuantity() > 0) {
+            <div class="chart-container">
+              <div class="donut"
+                   [style.background]="donutBackground()">
+                <div class="donut-hole">
+                  <strong>{{ totalQuantity() }}</strong>
+                  <span>Total Quantity</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-legend">
+              @for (item of chartItems(); track item.itemName) {
+                <div class="legend-row">
+                  <span class="legend-color"
+                        [style.background]="item.color">
+                  </span>
+                  <span class="legend-name">
+                    {{ item.itemName }}
+                  </span>
+                  <strong>{{ item.totalQuantity }}</strong>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="empty-chart">No item data available</p>
+          }
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+</div>
